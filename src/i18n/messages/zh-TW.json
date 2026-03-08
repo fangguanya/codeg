@@ -895,6 +895,7 @@
       "expandUntracked": "展開未追蹤檔案",
       "collapseUntracked": "折疊未追蹤檔案",
       "actions": {
+        "commitCode": "提交程式碼",
         "rollback": "回滾",
         "addToVcs": "加入到 VCS"
       },
@@ -903,6 +904,7 @@
         "noRollbackFilesInDir": "該目錄下沒有可回滾的變更檔案",
         "addedToVcs": "已加入 {name} 到 VCS",
         "addToVcsFailed": "加入到 VCS 失敗",
+        "openCommitWindowFailed": "打開提交視窗失敗",
         "rolledBack": "已回滾 {name}",
         "rollbackFailed": "回滾失敗",
         "addedFilesToVcs": "已加入 {count} 個檔案到 VCS",
@@ -946,6 +948,7 @@
       "actions": {
         "select": "選擇",
         "unselect": "取消選擇",
+        "commitCode": "提交程式碼",
         "rollback": "回滾",
         "addToVcs": "加入到 VCS"
       },
@@ -955,6 +958,7 @@
       "toasts": {
         "openDirectoryFailed": "開啟目錄失敗",
         "openBuiltinTerminalFailed": "無法開啟內建終端",
+        "openCommitWindowFailed": "打開提交視窗失敗",
         "noAddableFilesInDir": "該目錄下沒有可加入到 VCS 的變更檔案",
         "noRollbackFilesInDir": "該目錄下沒有可回滾的變更檔案",
         "addedToVcs": "已加入 {name} 到 VCS",

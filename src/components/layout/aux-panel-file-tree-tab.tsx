@@ -29,6 +29,7 @@ import {
   gitStatus,
   readFileForEdit,
   readFilePreview,
+  openCommitWindow,
   renameFileTreeEntry,
   saveFileCopy,
   startFileTreeWatch,
@@ -410,6 +411,7 @@ interface RenderNodeProps {
   onOpenFilePreview: (path: string) => void
   onOpenFileDiff: (path: string) => void
   onOpenDirDiff: (path: string) => void
+  onOpenCommitWindow: () => void
   onRequestCompareWithBranch: (target: FileActionTarget) => void
   onRequestRollback: (target: FileActionTarget) => void
   onOpenDirInTerminal: (dirPath: string, fileName: string) => Promise<void>
@@ -432,6 +434,7 @@ function RenderNode({
   onOpenFilePreview,
   onOpenFileDiff,
   onOpenDirDiff,
+  onOpenCommitWindow,
   onRequestCompareWithBranch,
   onRequestRollback,
   onOpenDirInTerminal,
@@ -507,6 +510,12 @@ function RenderNode({
               {t("git")}
             </ContextMenuSubTrigger>
             <ContextMenuSubContent>
+              <ContextMenuItem
+                onSelect={() => onOpenCommitWindow()}
+                disabled={isGitMenuDisabled}
+              >
+                {t("actions.commitCode")}
+              </ContextMenuItem>
               <ContextMenuItem
                 onSelect={() => onRequestAddToVcs(node)}
                 disabled={
@@ -614,6 +623,7 @@ function RenderNode({
                   onOpenFilePreview={onOpenFilePreview}
                   onOpenFileDiff={onOpenFileDiff}
                   onOpenDirDiff={onOpenDirDiff}
+                  onOpenCommitWindow={onOpenCommitWindow}
                   onRequestCompareWithBranch={onRequestCompareWithBranch}
                   onRequestRollback={onRequestRollback}
                   onOpenDirInTerminal={onOpenDirInTerminal}
@@ -632,6 +642,12 @@ function RenderNode({
             {t("git")}
           </ContextMenuSubTrigger>
           <ContextMenuSubContent>
+            <ContextMenuItem
+              onSelect={() => onOpenCommitWindow()}
+              disabled={isGitMenuDisabled}
+            >
+              {t("actions.commitCode")}
+            </ContextMenuItem>
             <ContextMenuItem
               onSelect={() => onRequestAddToVcs(node)}
               disabled={isGitMenuDisabled}
@@ -1113,6 +1129,16 @@ export function FileTreeTab() {
     },
     [createTerminalInDirectory, t]
   )
+
+  const handleOpenCommitWindow = useCallback(() => {
+    if (!folder) return
+    openCommitWindow(folder.id).catch((error) => {
+      const message = error instanceof Error ? error.message : String(error)
+      toast.error(t("toasts.openCommitWindowFailed"), {
+        description: message,
+      })
+    })
+  }, [folder, t])
 
   const handleRequestRename = useCallback((target: FileActionTarget) => {
     setRenameTarget(target)
@@ -2012,6 +2038,7 @@ export function FileTreeTab() {
                       onOpenDirDiff={(path) => {
                         void openWorkingTreeDiff(path, { mode: "overview" })
                       }}
+                      onOpenCommitWindow={handleOpenCommitWindow}
                       onRequestCompareWithBranch={
                         handleRequestCompareWithBranch
                       }

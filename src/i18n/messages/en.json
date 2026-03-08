@@ -895,6 +895,7 @@
       "expandUntracked": "Expand untracked files",
       "collapseUntracked": "Collapse untracked files",
       "actions": {
+        "commitCode": "Commit code",
         "rollback": "Rollback",
         "addToVcs": "Add to VCS"
       },
@@ -903,6 +904,7 @@
         "noRollbackFilesInDir": "No changed files in this directory can be rolled back",
         "addedToVcs": "Added {name} to VCS",
         "addToVcsFailed": "Failed to add to VCS",
+        "openCommitWindowFailed": "Failed to open commit window",
         "rolledBack": "Rolled back {name}",
         "rollbackFailed": "Rollback failed",
         "addedFilesToVcs": "Added {count, plural, one {# file} other {# files}} to VCS",
@@ -946,6 +948,7 @@
       "actions": {
         "select": "Select",
         "unselect": "Unselect",
+        "commitCode": "Commit code",
         "rollback": "Rollback",
         "addToVcs": "Add to VCS"
       },
@@ -955,6 +958,7 @@
       "toasts": {
         "openDirectoryFailed": "Failed to open directory",
         "openBuiltinTerminalFailed": "Unable to open built-in terminal",
+        "openCommitWindowFailed": "Failed to open commit window",
         "noAddableFilesInDir": "No changed files in this directory can be added to VCS",
         "noRollbackFilesInDir": "No changed files in this directory can be rolled back",
         "addedToVcs": "Added {name} to VCS",

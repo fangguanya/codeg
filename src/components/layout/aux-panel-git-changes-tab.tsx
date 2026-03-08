@@ -42,6 +42,7 @@ import {
   gitAddFiles,
   gitRollbackFile,
   gitStatus,
+  openCommitWindow,
   startFileTreeWatch,
   stopFileTreeWatch,
 } from "@/lib/tauri"
@@ -682,6 +683,16 @@ export function GitChangesTab() {
     setExpandedUntrackedPaths(new Set())
   }, [allUntrackedDirectoryPaths, untrackedCanExpand])
 
+  const handleOpenCommitWindow = useCallback(() => {
+    if (!folder) return
+    openCommitWindow(folder.id).catch((error) => {
+      const message = error instanceof Error ? error.message : String(error)
+      toast.error(t("toasts.openCommitWindowFailed"), {
+        description: message,
+      })
+    })
+  }, [folder, t])
+
   const resetDirectoryGitActionDialog = useCallback(() => {
     setDirectoryGitActionType(null)
     setDirectoryGitActionTarget(null)
@@ -904,6 +915,13 @@ export function GitChangesTab() {
             <ContextMenuContent>
               <ContextMenuItem
                 onSelect={() => {
+                  handleOpenCommitWindow()
+                }}
+              >
+                {t("actions.commitCode")}
+              </ContextMenuItem>
+              <ContextMenuItem
+                onSelect={() => {
                   void openWorkingTreeDiff(node.path, { mode: "overview" })
                 }}
               >
@@ -967,6 +985,13 @@ export function GitChangesTab() {
           </ContextMenuTrigger>
           <ContextMenuContent>
             <ContextMenuItem
+              onSelect={() => {
+                handleOpenCommitWindow()
+              }}
+            >
+              {t("actions.commitCode")}
+            </ContextMenuItem>
+            <ContextMenuItem
               disabled={!canOpenCurrentFile}
               onSelect={() => {
                 if (!canOpenCurrentFile) return
@@ -1002,6 +1027,7 @@ export function GitChangesTab() {
       )
     },
     [
+      handleOpenCommitWindow,
       handleAddToVcs,
       handleRequestRollback,
       openFilePreview,
@@ -1034,6 +1060,13 @@ export function GitChangesTab() {
               </FileTreeFolder>
             </ContextMenuTrigger>
             <ContextMenuContent>
+              <ContextMenuItem
+                onSelect={() => {
+                  handleOpenCommitWindow()
+                }}
+              >
+                {t("actions.commitCode")}
+              </ContextMenuItem>
               <ContextMenuItem
                 onSelect={() => {
                   void openWorkingTreeDiff(node.path, { mode: "overview" })
@@ -1092,6 +1125,13 @@ export function GitChangesTab() {
           <ContextMenuContent>
             <ContextMenuItem
               onSelect={() => {
+                handleOpenCommitWindow()
+              }}
+            >
+              {t("actions.commitCode")}
+            </ContextMenuItem>
+            <ContextMenuItem
+              onSelect={() => {
                 void openFilePreview(file.path)
               }}
             >
@@ -1124,6 +1164,7 @@ export function GitChangesTab() {
       )
     },
     [
+      handleOpenCommitWindow,
       handleAddToVcs,
       handleRequestRollback,
       openFilePreview,
