@@ -856,15 +856,15 @@ export function WelcomeInputPanel({
             {history.map((msg) => (
               <div key={msg.id}>
                 <Message from={msg.role === "tool" ? "assistant" : msg.role}>
-                  <MessageContent>
-                    <ContentPartsRenderer parts={msg.content} role={msg.role} />
-                  </MessageContent>
                   {msg.role === "user" && msg.userImages?.length ? (
                     <UserImageAttachments
                       images={msg.userImages}
                       className="self-end"
                     />
                   ) : null}
+                  <MessageContent>
+                    <ContentPartsRenderer parts={msg.content} role={msg.role} />
+                  </MessageContent>
                   {msg.role === "user" && msg.userResources?.length ? (
                     <UserResourceLinks
                       resources={msg.userResources}

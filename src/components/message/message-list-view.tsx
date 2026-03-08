@@ -132,12 +132,12 @@ const HistoricalMessageGroup = memo(function HistoricalMessageGroup({
       }}
     >
       <Message from={group.role}>
-        <MessageContent>
-          <ContentPartsRenderer parts={group.parts} role={group.role} />
-        </MessageContent>
         {group.role === "user" && group.images.length > 0 ? (
           <UserImageAttachments images={group.images} className="self-end" />
         ) : null}
+        <MessageContent>
+          <ContentPartsRenderer parts={group.parts} role={group.role} />
+        </MessageContent>
         {group.role === "user" && group.resources.length > 0 ? (
           <UserResourceLinks resources={group.resources} className="self-end" />
         ) : null}
@@ -162,12 +162,12 @@ const PendingMessageGroup = memo(function PendingMessageGroup({
   return (
     <div className="opacity-70">
       <Message from={group.role}>
-        <MessageContent>
-          <ContentPartsRenderer parts={group.parts} role={group.role} />
-        </MessageContent>
         {group.role === "user" && group.images.length > 0 ? (
           <UserImageAttachments images={group.images} className="self-end" />
         ) : null}
+        <MessageContent>
+          <ContentPartsRenderer parts={group.parts} role={group.role} />
+        </MessageContent>
         {group.role === "user" && group.resources.length > 0 ? (
           <UserResourceLinks resources={group.resources} className="self-end" />
         ) : null}
