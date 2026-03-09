@@ -149,11 +149,21 @@ impl TerminalInstance {
                 return Ok(());
             };
 
-            if let Err(err) = child.kill().await {
-                if err.kind() != std::io::ErrorKind::InvalidInput {
-                    return Err(TerminalRuntimeError::Internal(format!(
-                        "failed to kill terminal process: {err}"
-                    )));
+            #[cfg(target_os = "windows")]
+            {
+                if let Some(pid) = child.id() {
+                    let _ = kill_tree::tokio::kill_tree(pid);
+                }
+            }
+
+            #[cfg(not(target_os = "windows"))]
+            {
+                if let Err(err) = child.kill().await {
+                    if err.kind() != std::io::ErrorKind::InvalidInput {
+                        return Err(TerminalRuntimeError::Internal(format!(
+                            "failed to kill terminal process: {err}"
+                        )));
+                    }
                 }
             }
 

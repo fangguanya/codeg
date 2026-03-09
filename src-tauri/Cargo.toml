@@ -56,6 +56,7 @@ tauri-plugin-process = "2"
 
 [target.'cfg(target_os = "windows")'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Storage_FileSystem"] }
+kill_tree = "0.2"
 
 [patch.crates-io]
 sacp-tokio = { path = "vendor/sacp-tokio" }
