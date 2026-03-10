@@ -33,6 +33,7 @@ interface ConversationShellProps {
   attachmentTabId?: string | null
   draftStorageKey?: string | null
   hideInput?: boolean
+  isActive?: boolean
 }
 
 export function ConversationShell({
@@ -57,6 +58,7 @@ export function ConversationShell({
   attachmentTabId,
   draftStorageKey,
   hideInput = false,
+  isActive,
 }: ConversationShellProps) {
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -85,6 +87,7 @@ export function ConversationShell({
           availableCommands={availableCommands}
           attachmentTabId={attachmentTabId}
           draftStorageKey={draftStorageKey}
+          isActive={isActive}
         />
       )}
 

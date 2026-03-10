@@ -28,6 +28,7 @@ interface ChatInputProps {
   availableCommands?: AvailableCommandInfo[] | null
   attachmentTabId?: string | null
   draftStorageKey?: string | null
+  isActive?: boolean
 }
 
 export function ChatInput({
@@ -47,6 +48,7 @@ export function ChatInput({
   availableCommands,
   attachmentTabId,
   draftStorageKey,
+  isActive,
 }: ChatInputProps) {
   const t = useTranslations("Folder.chat.chatInput")
   const isConnected = status === "connected"
@@ -73,6 +75,7 @@ export function ChatInput({
         availableCommands={availableCommands}
         attachmentTabId={attachmentTabId}
         draftStorageKey={draftStorageKey}
+        isActive={isActive}
         placeholder={
           isConnecting
             ? t("connecting")

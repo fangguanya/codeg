@@ -575,6 +575,7 @@ const ConversationTabView = memo(function ConversationTabView({
       attachmentTabId={tabId}
       draftStorageKey={draftStorageKey}
       hideInput={isWelcomeMode}
+      isActive={isActive}
     >
       {isWelcomeMode ? (
         <div className="flex h-full min-h-0 flex-col items-center justify-center">
@@ -623,6 +624,7 @@ const ConversationTabView = memo(function ConversationTabView({
               availableCommands={connectionCommands}
               attachmentTabId={tabId}
               draftStorageKey={draftStorageKey}
+              isActive={isActive}
             />
           </div>
         </div>

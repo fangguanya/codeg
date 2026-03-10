@@ -54,6 +54,7 @@ interface MessageInputProps {
   promptCapabilities: PromptCapabilitiesInfo
   attachmentTabId?: string | null
   draftStorageKey?: string | null
+  isActive?: boolean
 }
 
 interface ResourceInputAttachment {
@@ -252,6 +253,7 @@ export function MessageInput({
   promptCapabilities,
   attachmentTabId,
   draftStorageKey,
+  isActive = false,
 }: MessageInputProps) {
   const t = useTranslations("Folder.chat.messageInput")
   const effectiveDraftStorageKey = draftStorageKey ?? attachmentTabId ?? null
@@ -263,11 +265,20 @@ export function MessageInput({
   const [attachments, setAttachments] = useState<InputAttachment[]>([])
   const [isDragActive, setIsDragActive] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const lastDomDropAtRef = useRef(0)
   const composingRef = useRef(false)
   const textRef = useRef(text)
   const disabledRef = useRef(disabled)
   const isPromptingRef = useRef(isPrompting)
+
+  useEffect(() => {
+    if (isActive && !disabled && !isPrompting) {
+      requestAnimationFrame(() => {
+        textareaRef.current?.focus()
+      })
+    }
+  }, [isActive, disabled, isPrompting])
   const dragActiveRef = useRef(false)
   const canAttachImages = promptCapabilities.image
 
@@ -1001,6 +1012,7 @@ export function MessageInput({
         />
       )}
       <Textarea
+        ref={textareaRef}
         value={text}
         onChange={handleTextChange}
         onKeyDown={handleKeyDown}
