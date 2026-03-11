@@ -875,6 +875,7 @@ function getToolIcon(
   if (name === "skill") return <SparklesIcon className={ICON_CLASS} />
   if (name === "enterplanmode" || name === "exitplanmode")
     return <BrainIcon className={ICON_CLASS} />
+  if (name === "switch_mode") return <MapIcon className={ICON_CLASS} />
   return undefined
 }
 
@@ -1049,8 +1050,16 @@ function deriveToolTitle(
     if (sk) return `Skill: ${sk}`
   }
 
-  // EnterPlanMode / ExitPlanMode
-  if (name === "enterplanmode" || name === "exitplanmode") return toolName
+  // EnterPlanMode / ExitPlanMode / SwitchMode
+  if (
+    name === "enterplanmode" ||
+    name === "exitplanmode" ||
+    name === "switch_mode"
+  ) {
+    const title = getField("title")
+    if (title) return title
+    return "Plan"
+  }
 
   // Generic: try to show the first string field as context
   if (parsed) {
@@ -1655,6 +1664,39 @@ function ApplyPatchToolInput({ input }: { input: string }) {
   )
 }
 
+// ── Switch mode (plan) input ──────────────────────────────────────────
+
+function extractPlanMarkdown(input: Record<string, unknown>): string | null {
+  const direct = input.plan ?? input.Plan
+  if (typeof direct === "string" && direct.trim().length > 0) return direct
+
+  const nested =
+    typeof input.rawInput === "object" && input.rawInput !== null
+      ? (input.rawInput as Record<string, unknown>)
+      : typeof input.raw_input === "object" && input.raw_input !== null
+        ? (input.raw_input as Record<string, unknown>)
+        : null
+  if (nested) {
+    const nestedPlan = nested.plan ?? nested.Plan
+    if (typeof nestedPlan === "string" && nestedPlan.trim().length > 0) {
+      return nestedPlan
+    }
+  }
+
+  return null
+}
+
+function SwitchModeToolInput({ input }: { input: Record<string, unknown> }) {
+  const planMarkdown = extractPlanMarkdown(input)
+  if (!planMarkdown) return null
+
+  return (
+    <div className="text-sm prose prose-sm dark:prose-invert max-w-none [&_ul]:list-inside [&_ol]:list-inside">
+      <MessageResponse>{planMarkdown}</MessageResponse>
+    </div>
+  )
+}
+
 // ── Generic structured input (fallback) ──────────────────────────────
 
 /** Fields that typically contain code / long text → render in code blocks */
@@ -1813,6 +1855,15 @@ function StructuredToolInput({
     name === "tasklist"
   )
     return <TaskToolInput input={parsed} />
+  if (
+    name === "switch_mode" ||
+    name === "enterplanmode" ||
+    name === "exitplanmode"
+  ) {
+    if (extractPlanMarkdown(parsed)) {
+      return <SwitchModeToolInput input={parsed} />
+    }
+  }
 
   return <GenericToolInput input={input} />
 }
@@ -2143,7 +2194,11 @@ const ToolCallPart = memo(function ToolCallPart({
     isRunning,
   ])
   const shouldHideDuplicateResult =
-    (toolNameLower === "edit" || toolNameLower === "apply_patch") &&
+    (toolNameLower === "edit" ||
+      toolNameLower === "apply_patch" ||
+      toolNameLower === "switch_mode" ||
+      toolNameLower === "enterplanmode" ||
+      toolNameLower === "exitplanmode") &&
     !part.errorText
   const open = (isRunning && (isCommandTool || hasLiveOutput)) || manualOpen
 
